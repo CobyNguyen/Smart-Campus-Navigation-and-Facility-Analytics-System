@@ -1,0 +1,24 @@
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+Member A:
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+Noah Clifford - Member B:
+
+campus graph - implemented through facilityGraph class
+BFS reachability - N/A
+shortest path - N/A
+connectivity report - implemented through facilityGraph class using an adjacency matrix
+
+files:
+    facilityGraph.cpp/h
+    facilityNode.cpp/h
+
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+Member C:
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+Shared work:
+
+    main.cpp
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
