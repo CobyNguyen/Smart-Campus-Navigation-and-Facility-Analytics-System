@@ -21,6 +21,7 @@ class FacilityGraph{
         
         int search(string findName);
         void reachability(FacilityNode &in);
+        void shortest_path(FacilityNode &start, FacilityNode &target);
         FacilityNode* get(string findName);
         void unit_test();
 };

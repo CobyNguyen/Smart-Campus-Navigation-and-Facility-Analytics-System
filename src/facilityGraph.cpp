@@ -1,4 +1,5 @@
 #include "../include/facilityGraph.h"
+#include <cstddef>
 #include <queue>
 
 using namespace std;
@@ -179,7 +180,7 @@ bool add_node_to_BFS_queue(FacilityNode &in, queue<FacilityNode*> &BFSqueue, vec
     return !hasBeenVisited;
 }
 
-
+//handle null inputs outside of method
 void FacilityGraph::reachability(FacilityNode &in){ //breadth first search to find reachability
     queue<FacilityNode*> BFSqueue;
     vector<FacilityNode*> visited;
@@ -214,6 +215,74 @@ void FacilityGraph::reachability(FacilityNode &in){ //breadth first search to fi
     }
 
     cout << endl << endl;
+}
+
+//handle null inputs outside of method
+void FacilityGraph::shortest_path(FacilityNode &start, FacilityNode &target){
+    if (start == target){
+        return;
+    }
+    
+    queue<FacilityNode*> BFSqueue;
+    vector<FacilityNode*> visited;
+    vector<FacilityNode*> parents;
+    vector<FacilityNode*> path;
+    vector<int> distances;
+    int distance = 0;
+
+    add_node_to_BFS_queue(start, BFSqueue, visited, distances, distance);
+    parents.push_back(&start);
+    distance++;
+
+    while(BFSqueue.size() > 0){
+        FacilityNode* current = BFSqueue.front();
+        vector<FacilityNode*> nextToAdd = current -> get_connections();
+        bool wasAdded = false;
+
+        for(int i = 0; i < nextToAdd.size(); i++){
+            if (add_node_to_BFS_queue(*nextToAdd.at(i), BFSqueue, visited, distances, distance)){
+                parents.push_back(current);
+                wasAdded = true;
+
+                if (nextToAdd.at(i) == &target){ //Found target
+                    
+                    FacilityNode* traverse = visited.back(); //start at found target node
+                    while (traverse != &start){
+                        //find index of the traverse node
+                        int index = -1;
+                        for (int i = 0; i < visited.size(); i++){
+                            if (visited.at(i) == traverse){
+                                index = i;
+                                break;
+                            }
+                        }
+                        //find parent of traverse node and set traverse to its parent
+                        path.push_back(traverse);
+                        traverse = parents.at(index);
+                    }
+
+                    path.push_back(traverse);
+
+                    cout << "Shortest path from " << start.get_name() << " to " << target.get_name() << ": " << endl;
+                    for (int i = path.size() - 1; i >= 0; i--){
+                        cout << path.at(i)->get_name() << " ";
+                    }
+                    cout << endl;
+
+                    return;
+                }
+            }
+        }
+        if (wasAdded){
+            distance++;
+        }
+        BFSqueue.pop();
+    }
+
+    //completed BFS
+
+    cout << "No path from " << start.get_name() << " to " << target.get_name() << endl;
+
 }
 
 
@@ -254,5 +323,5 @@ void FacilityGraph::unit_test(){
     if (search("G") != -1){ 
         reachability(graph.at(search("G")));
     }
-    
+    shortest_path(graph.at(search("A")), graph.at(search("D")));
 }
