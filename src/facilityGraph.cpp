@@ -236,11 +236,11 @@ void FacilityGraph::unit_test(){
     connect_nodes("A", "C");
     connect_nodes("B", "C");
     connect_nodes("A", "C");
-    cout << endl;
-    connect_nodes("W", "A");
     connect_nodes("A", "E");
     connect_nodes("D", "E");
     connect_nodes("F", "D");
+    cout << endl;
+    connect_nodes("W", "A");
     connect_nodes("Q", "N");
     cout << endl;
     connect_nodes("A", "A");
