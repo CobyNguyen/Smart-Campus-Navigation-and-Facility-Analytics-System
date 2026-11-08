@@ -4,7 +4,9 @@ FacilityGraph graph;
 
 int main(){
 
-    graph.unit_test();
+    //graph.unit_test();
+
+    
 
     return 0;
 }

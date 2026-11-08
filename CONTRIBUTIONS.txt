@@ -7,7 +7,7 @@ Noah Clifford - Member B:
 campus graph - implemented through facilityGraph class
 BFS reachability - N/A
 shortest path - N/A
-connectivity report - implemented through facilityGraph class using an adjacency matrix
+connectivity report WIP - implemented through facilityGraph class using an adjacency list (chosen for simplicity and text output amount)
 
 files:
     facilityGraph.cpp/h
