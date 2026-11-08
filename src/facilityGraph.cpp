@@ -1,4 +1,5 @@
 #include "../include/facilityGraph.h"
+#include <queue>
 
 using namespace std;
 
@@ -16,9 +17,11 @@ void FacilityGraph::display_connections(){
     }
 
     for (int i = 0; i < graph.size(); i++){
-        cout << i << ": ";
+        //cout << i << ": ";
         graph.at(i).print();
     }
+
+    cout << endl;
 
     //Print adjacency matrix
     
@@ -137,6 +140,83 @@ bool FacilityGraph::connect_nodes(string nodeNameA, string nodeNameB){
     }
 }
 
+int FacilityGraph::search(string findName){ //case insensitive searching
+    for (int i = 0; i < graph.size(); i++){
+        if (graph.at(i).get_name() == findName){
+            return i;
+        }
+    }
+    return -1;
+}
+
+FacilityNode* FacilityGraph::get(string findName){ //case insensitive searching
+    for (int i = 0; i < graph.size(); i++){
+        if (graph.at(i).get_name() == findName){
+            return &graph.at(i);
+        }
+    }
+    return nullptr;
+}
+
+
+bool add_node_to_BFS_queue(FacilityNode &in, queue<FacilityNode*> &BFSqueue, vector<FacilityNode*> &visited, vector<int> &distances, int currentDist){
+    bool hasBeenVisited = false;
+   
+    //check to see if node has already been visited
+    for (int i = 0; i < visited.size(); i++){
+        if (visited.at(i) == &in){
+            hasBeenVisited = true;
+        }
+    }
+
+    //if it hasn't been visited, add node to the queue and visited list
+    if(!hasBeenVisited){
+        BFSqueue.push(&in);
+        visited.push_back(&in);
+        distances.push_back(currentDist);
+    }
+
+    return !hasBeenVisited;
+}
+
+
+void FacilityGraph::reachability(FacilityNode &in){ //breadth first search to find reachability
+    queue<FacilityNode*> BFSqueue;
+    vector<FacilityNode*> visited;
+    vector<int> distances;
+    int distance = 0;
+
+    add_node_to_BFS_queue(in, BFSqueue, visited, distances, distance);
+
+    distance++;
+
+    while(BFSqueue.size() > 0){
+        FacilityNode* current = BFSqueue.front();
+        vector<FacilityNode*> nextToAdd = current -> get_connections();
+        bool wasAdded = false;
+
+        for(int i = 0; i < nextToAdd.size(); i++){
+            if (add_node_to_BFS_queue(*nextToAdd.at(i), BFSqueue, visited, distances, distance)){
+                wasAdded = true;
+            }
+        }
+        if (wasAdded){
+            distance++;
+        }
+        BFSqueue.pop();
+    }
+
+    cout << "Reachability of " << in.get_name() << endl;
+    cout << "Total reachable: " << visited.size() << endl;
+
+    for (int i = 0; i < visited.size(); i++){
+        cout << visited.at(i)->get_name() << " dist(" << distances.at(i) << ") ";
+    }
+
+    cout << endl << endl;
+}
+
+
 void FacilityGraph::unit_test(){
     cout << "_UNIT TESTING FACILITY GRAPH_" << endl;
 
@@ -159,10 +239,20 @@ void FacilityGraph::unit_test(){
     cout << endl;
     connect_nodes("W", "A");
     connect_nodes("A", "E");
+    connect_nodes("D", "E");
+    connect_nodes("F", "D");
     connect_nodes("Q", "N");
     cout << endl;
     connect_nodes("A", "A");
     cout << endl;
     cout << "Displaying connectivity:" << endl;
     display_connections();
+
+    if (search("A") != -1){ //Always do checks like this before using the search result
+        reachability(graph.at(search("A")));
+    }
+    if (search("G") != -1){ 
+        reachability(graph.at(search("G")));
+    }
+    
 }

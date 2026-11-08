@@ -45,9 +45,8 @@ bool FacilityNode::add_connection(FacilityNode* in){
     }
 }
 
-//Overrides the print operator so nodes get printed with their connections
 void FacilityNode::print(){
-    cout << name << " : ";
+    cout << name << " degree(" << connections.size() << ") - ";
     
     if (connections.size() > 0){
         for (int i = 0; i < connections.size() - 1; i++){

@@ -1,5 +1,7 @@
 #include "../include/facilityNode.h"
 
+#include <queue>
+
 using namespace std;
 
 class FacilityGraph{
@@ -16,6 +18,9 @@ class FacilityGraph{
         bool add_node(string in);
         bool connect_nodes(FacilityNode &a, FacilityNode &b);
         bool connect_nodes(string a, string b);
-
+        
+        int search(string findName);
+        void reachability(FacilityNode &in);
+        FacilityNode* get(string findName);
         void unit_test();
 };
