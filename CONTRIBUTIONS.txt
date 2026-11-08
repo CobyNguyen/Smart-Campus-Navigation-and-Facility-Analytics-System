@@ -13,6 +13,10 @@ files:
     facilityGraph.cpp/h
     facilityNode.cpp/h
 
+added safegaurds to the graph and nodes: 
+    prevents duplicate nodes
+    aborts when trying to connect nodes that dont exist
+    aborts when trying to connect nodes that are already connected
 
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 Member C:

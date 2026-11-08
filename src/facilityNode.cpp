@@ -37,7 +37,7 @@ bool FacilityNode::has_connection(FacilityNode* in){
 
 bool FacilityNode::add_connection(FacilityNode* in){
     if (!has_connection(in)) {
-        cout << "Connecting node: " << name << " to " << in -> get_name() << endl;
+        //cout << "Connecting node: " << name << " to " << in -> get_name() << endl;
         connections.push_back(in); //Add the target node to our connections
         return true;
     } else {
@@ -47,10 +47,17 @@ bool FacilityNode::add_connection(FacilityNode* in){
 
 //Overrides the print operator so nodes get printed with their connections
 void FacilityNode::print(){
-    cout << name << " | ";
+    cout << name << " : ";
     
-    for (int i = 0; i < connections.size(); i++){
+    if (connections.size() > 0){
+        for (int i = 0; i < connections.size() - 1; i++){
         cout << connections.at(i) -> get_name() << " | ";
+        }
+
+        cout << connections.back() -> get_name();
+    }
+    else{
+        cout << "N/A";
     }
 
     cout << endl;

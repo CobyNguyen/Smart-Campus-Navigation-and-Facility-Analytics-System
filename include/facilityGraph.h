@@ -11,8 +11,11 @@ class FacilityGraph{
 
         void display_connections();
         bool has_node(const FacilityNode &in);
+        bool has_node(string in);
         bool add_node(const FacilityNode &in);
         bool add_node(string in);
         bool connect_nodes(FacilityNode &a, FacilityNode &b);
         bool connect_nodes(string a, string b);
+
+        void unit_test();
 };
