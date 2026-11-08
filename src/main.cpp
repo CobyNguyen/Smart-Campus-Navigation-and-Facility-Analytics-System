@@ -6,7 +6,5 @@ int main(){
 
     graph.unit_test();
 
-
-
     return 0;
 }

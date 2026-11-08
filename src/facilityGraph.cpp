@@ -12,39 +12,73 @@ FacilityGraph::FacilityGraph(){
 //Other methods
 void FacilityGraph::display_connections(){
     cout << endl << "Connectivity Report: " << endl;
+    cout << endl;
 
     if (graph.size() < 1){
-        cout << "Graph is empty!" << endl;
+        cout << "No buildings!" << endl;
+        return;
+    }
+    
+    cout << "Total buildings: " << graph.size() << endl;
+    cout << endl;
+
+    //sum of degrees theorem
+    int sum = 0;
+    for (int i = 0; i < graph.size(); i++){
+        sum += graph.at(i).get_connections().size();
     }
 
+    sum /= 2;
+
+    cout << "Total connections: " << sum << endl;
+    cout << endl;
+
+    int maxDegree = 0;
     for (int i = 0; i < graph.size(); i++){
-        //cout << i << ": ";
-        graph.at(i).print();
+        int degree = graph.at(i).get_connections().size();
+        if (degree > maxDegree){
+            maxDegree = degree;
+        }
+    }
+
+    cout << "Building(s) with highest degree (" << maxDegree << "):" << endl;
+
+    for (int i = 0; i < graph.size(); i++){
+        int degree = graph.at(i).get_connections().size();
+        if (degree == maxDegree){
+            cout << " - " << graph.at(i).get_name() << endl;
+        }
     }
 
     cout << endl;
 
-    //Print adjacency matrix
-    
-    //cout << "\t  ";
+    cout << "Isolated buildings: " << endl;
+
+    bool hasIsolated = false;
+    for (int i = 0; i < graph.size(); i++){
+        int degree = graph.at(i).get_connections().size();
+        if (degree == 0){
+            cout << " - " << graph.at(i).get_name() << endl;
+            hasIsolated = true;
+        }
+    }
+
+    if (!hasIsolated){
+        cout << " - None" << endl;
+    }
+
+    cout << endl;
+
+    cout << "Connected components: " << "N/A" << endl;
+
+    cout << endl;
+
     //for (int i = 0; i < graph.size(); i++){
-    //    cout << graph.at(i).get_name() << " ";
+    //    graph.at(i).print();
     //}
+
     //cout << endl;
 
-    //Compares each node with every other node to create the matrix
-    //for (int row = 0; row < graph.size(); row++){
-    //    cout << "\t" << graph.at(row).get_name() << " ";
-    //    for (int col = 0; col < graph.size(); col++){
-    //        if (graph.at(row).has_connection(&graph.at(col))){
-    //            cout << "X ";
-    //        }
-    //        else{
-    //            cout << ". ";
-    //        }
-    //    }
-    //    cout << endl;
-    //}
 }
 
 bool FacilityGraph::has_node(const FacilityNode &in){
@@ -306,6 +340,7 @@ void FacilityGraph::unit_test(){
     connect_nodes("B", "C");
     connect_nodes("A", "C");
     connect_nodes("A", "E");
+    connect_nodes("C", "F");
     connect_nodes("D", "E");
     connect_nodes("F", "D");
     cout << endl;
@@ -314,7 +349,7 @@ void FacilityGraph::unit_test(){
     cout << endl;
     connect_nodes("A", "A");
     cout << endl;
-    cout << "Displaying connectivity:" << endl;
+
     display_connections();
 
     if (search("A") != -1){ //Always do checks like this before using the search result
