@@ -1,7 +1,4 @@
 #include "../include/facilityGraph.h"
-#include <cstddef>
-#include <queue>
-
 #include <cctype>
 #include <fstream>
 #include <queue>
@@ -64,7 +61,7 @@ void FacilityGraph::connectivity_report(){
 
     //sum of degrees theorem
     int sum = 0;
-    for (int i = 0; i < graph.size(); i++){
+    for (int i = 0; i < static_cast<int>(graph.size()); i++){
         sum += graph.at(i).get_connections().size();
     }
 
@@ -74,7 +71,7 @@ void FacilityGraph::connectivity_report(){
     cout << endl;
 
     int maxDegree = 0;
-    for (int i = 0; i < graph.size(); i++){
+    for (int i = 0; i < static_cast<int>(graph.size()); i++){
         int degree = graph.at(i).get_connections().size();
         if (degree > maxDegree){
             maxDegree = degree;
@@ -83,7 +80,7 @@ void FacilityGraph::connectivity_report(){
 
     cout << "Building(s) with highest degree (" << maxDegree << "):" << endl;
 
-    for (int i = 0; i < graph.size(); i++){
+    for (int i = 0; i < static_cast<int>(graph.size()); i++){
         int degree = graph.at(i).get_connections().size();
         if (degree == maxDegree){
             cout << " - " << graph.at(i).get_name() << endl;
@@ -157,7 +154,7 @@ void FacilityGraph::connectivity_report(){
 }
 
 bool FacilityGraph::has_node(const FacilityNode &in){
-    for (int i = 0; i < graph.size(); i++){
+    for (int i = 0; i < static_cast<int>(graph.size()); i++){
         if (graph.at(i) == in){
             return true;
         }
@@ -199,17 +196,12 @@ bool FacilityGraph::connect_nodes(string nodeNameA, string nodeNameB){
     FacilityNode* nodeRefA = nullptr;
     FacilityNode* nodeRefB = nullptr;
 
-    bool foundA = false;
-    bool foundB = false;
-
-    for (int i = 0; i < graph.size(); i++){
+    for (int i = 0; i < static_cast<int>(graph.size()); i++){
         if (graph.at(i).get_name() == nodeNameA){
             nodeRefA = &graph.at(i);
-            foundA = true;
         }
 
         if (graph.at(i).get_name() == nodeNameB){
-            foundB = true;
             nodeRefB = &graph.at(i);
         }
     }
@@ -253,7 +245,7 @@ bool FacilityGraph::connect_nodes(string nodeNameA, string nodeNameB){
 
 int FacilityGraph::search(string findName){ //case insensitive searching
     const string wanted = normalizedName(findName);
-    for (int i = 0; i < graph.size(); i++){
+    for (int i = 0; i < static_cast<int>(graph.size()); i++){
         if (normalizedName(graph.at(i).get_name()) == wanted){
             return i;
         }
@@ -263,7 +255,7 @@ int FacilityGraph::search(string findName){ //case insensitive searching
 
 FacilityNode* FacilityGraph::get(string findName){ //case insensitive searching
     const string wanted = normalizedName(findName);
-    for (int i = 0; i < graph.size(); i++){
+    for (int i = 0; i < static_cast<int>(graph.size()); i++){
         if (normalizedName(graph.at(i).get_name()) == wanted){
             return &graph.at(i);
         }
@@ -339,7 +331,7 @@ bool add_node_to_BFS_queue(FacilityNode &in, queue<FacilityNode*> &BFSqueue, vec
     bool hasBeenVisited = false;
    
     //check to see if node has already been visited
-    for (int i = 0; i < visited.size(); i++){
+    for (int i = 0; i < static_cast<int>(visited.size()); i++){
         if (visited.at(i) == &in){
             hasBeenVisited = true;
         }
@@ -371,7 +363,7 @@ void FacilityGraph::reachability(FacilityNode &in){ //breadth first search to fi
         vector<FacilityNode*> nextToAdd = current -> get_connections();
         bool wasAdded = false;
 
-        for(int i = 0; i < nextToAdd.size(); i++){
+        for(int i = 0; i < static_cast<int>(nextToAdd.size()); i++){
             if (add_node_to_BFS_queue(*nextToAdd.at(i), BFSqueue, visited, distances, distance)){
                 wasAdded = true;
             }
@@ -383,9 +375,9 @@ void FacilityGraph::reachability(FacilityNode &in){ //breadth first search to fi
     }
 
     cout << "Reachability of " << in.get_name() << endl;
-    cout << "Total reachable: " << visited.size() << endl;
+    cout << "Total reachable: " << visited.size() << "/" << graph.size() << endl;
 
-    for (int i = 0; i < visited.size(); i++){
+    for (int i = 0; i < static_cast<int>(visited.size()); i++){
         cout << visited.at(i)->get_name() << " dist(" << distances.at(i) << ") ";
     }
 
@@ -414,7 +406,7 @@ void FacilityGraph::shortest_path(FacilityNode &start, FacilityNode &target){
         vector<FacilityNode*> nextToAdd = current -> get_connections();
         bool wasAdded = false;
 
-        for(int i = 0; i < nextToAdd.size(); i++){
+        for(int i = 0; i < static_cast<int>(nextToAdd.size()); i++){
             if (add_node_to_BFS_queue(*nextToAdd.at(i), BFSqueue, visited, distances, distance)){
                 parents.push_back(current);
                 wasAdded = true;
@@ -425,7 +417,7 @@ void FacilityGraph::shortest_path(FacilityNode &start, FacilityNode &target){
                     while (traverse != &start){
                         //find index of the traverse node
                         int index = -1;
-                        for (int i = 0; i < visited.size(); i++){
+                        for (int i = 0; i < static_cast<int>(visited.size()); i++){
                             if (visited.at(i) == traverse){
                                 index = i;
                                 break;
@@ -439,7 +431,7 @@ void FacilityGraph::shortest_path(FacilityNode &start, FacilityNode &target){
                     path.push_back(traverse);
 
                     cout << "Shortest path from " << start.get_name() << " to " << target.get_name() << ": " << endl;
-                    for (int i = path.size() - 1; i >= 0; i--){
+                    for (int i = static_cast<int>(path.size()) - 1; i >= 0; i--){
                         cout << path.at(i)->get_name() << " ";
                     }
                     cout << endl;

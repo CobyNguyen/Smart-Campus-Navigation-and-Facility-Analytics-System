@@ -64,7 +64,7 @@ void FacilityNode::print(){
         }
     }
     else{
-        cout << "N/A";
+        cout << "no connections";
     }
 
     cout << endl;

@@ -1,0 +1,67 @@
+Milestone 1 Test Results
+
+Environment: Windows, g++ C++17, make.exe
+Build command: make.exe all
+
+Test 1 - Build
+Input: make.exe all
+Expected: Program builds with no errors or warnings.
+Actual: Build completed successfully with no compiler warnings.
+Result: PASS
+
+Test 2 - File loading
+Input: Start the program with the provided data directory.
+Expected: buildings, connections, facilities, and departments load.
+Actual: 7 buildings, 6 connections, 10 facilities, and 7 departments loaded.
+Result: PASS
+
+Test 3 - Facility display
+Input: Menu option 1.
+Expected: All accepted facilities display in file order.
+Actual: 10 facilities displayed.
+Result: PASS
+
+Test 4 - Facility ID search
+Input: Menu option 2; search for F001.
+Expected: The matching facility is displayed.
+Actual: Matching facility was displayed through the custom hash table.
+Result: PASS
+
+Test 5 - Graph display and statistics
+Input: Menu options 3 and 4.
+Expected: Buildings, neighbors, degrees, total connections, isolated buildings,
+and connected components display.
+Actual: The adjacency list displayed; totals were 7 buildings, 6 connections,
+and 2 connected components. Observatory was identified as isolated.
+Result: PASS
+
+Test 6 - BFS from an isolated building
+Input: Menu option 5; Observatory.
+Expected: Only Observatory is reachable at distance 0.
+Actual: Observatory was the only visited building at distance 0.
+Result: PASS
+
+Test 7 - Department addition and search
+Input: Menu option 6; add a department with a parent, then option 7.
+Expected: The department is added in memory and can be found case-insensitively.
+Actual: The department was added and search returned its details.
+Result: PASS
+
+Test 8 - Department hierarchy and preorder
+Input: Menu options 8 and 9.
+Expected: The hierarchy and preorder traversal display in insertion order.
+Actual: Both operations displayed the loaded tree in preorder order.
+Result: PASS
+
+Test 9 - Hash diagnostic
+Input: Start the program with the provided data.
+Expected: The facilities summary reports table capacity, entries, and at least
+one collision.
+Actual: capacity 11, entries 10, collisions 1.
+Result: PASS
+
+Test 10 - Invalid menu input
+Input: A nonnumeric menu line, followed by 0.
+Expected: An error is shown and the program returns to the menu.
+Actual: The input was rejected and the program continued.
+Result: PASS

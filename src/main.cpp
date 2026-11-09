@@ -49,6 +49,7 @@ void runCommand(int choice) { //Function to run commands based on user input
             const Facility* facility = database.findById(id);
             if (facility) {
                 PrintFacility(*facility);
+                cout << "Facility found.\n";
             } else {
                 cout << "Facility not found.\n";
             }
@@ -77,7 +78,6 @@ void runCommand(int choice) { //Function to run commands based on user input
         case 6: {
             string name, parentName;
             cout << "Enter department name: ";
-            cin.ignore(); // Clear the newline character from the input buffer
             getline(cin, name);
             cout << "Enter parent department name (or leave blank for root): ";
             getline(cin, parentName);
@@ -92,7 +92,6 @@ void runCommand(int choice) { //Function to run commands based on user input
         case 7: {
             string name;
             cout << "Enter department name to search: ";
-            cin.ignore(); // Clear the newline character from the input buffer
             getline(cin, name);
             departmentTree.printDepartment(name, cout);
             break;

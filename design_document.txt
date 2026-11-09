@@ -1,0 +1,38 @@
+Smart Campus Navigation and Facility Analytics System
+
+Hash table
+----------
+Facility IDs are normalized by trimming outer whitespace and converting
+letters to uppercase. The custom hash table uses polynomial hashing:
+
+    hash = (hash * 31 + character) % capacity
+
+The table uses separate chaining. Each bucket is a vector of Facility
+objects, so multiple IDs may occupy the same bucket. A collision is counted
+when an accepted insertion goes into a nonempty bucket. Duplicate IDs are
+rejected before insertion and do not increase the collision count.
+
+Graph
+-----
+Buildings are vertices in an undirected, unweighted graph. The graph uses an
+adjacency list: FacilityGraph stores FacilityNode objects, and each node stores
+a vector of pointers to its neighboring nodes. Adding a walkway updates both
+endpoints. This representation avoids unused matrix entries and preserves
+building and neighbor insertion order.
+
+The same adjacency list is used for graph display, degree and connection
+statistics, connected-component counting, and BFS reachability.
+
+Main classes and modules
+------------------------
+Facility stores one facility record and exposes getters and setters.
+FacilityTable implements the custom ID hash table.
+FacilityDatabase loads, validates, stores, searches, and reports facilities.
+FacilityNode stores one building and its neighboring building pointers.
+FacilityGraph loads buildings and connections and provides graph operations.
+DepartmentTree stores the department hierarchy as a general tree. Each node
+owns a vector of children through unique_ptr and stores a parent pointer for
+metadata lookup.
+DepartmentMenu handles department prompts and menu actions.
+main.cpp loads the files, prints the Milestone 1 menu, and coordinates calls
+to the modules.
