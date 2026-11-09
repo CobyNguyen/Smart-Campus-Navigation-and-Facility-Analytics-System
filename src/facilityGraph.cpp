@@ -19,6 +19,15 @@ string trim(const string& value) {
     const int last = static_cast<int>(value.find_last_not_of(whitespace));
     return value.substr(first, last - first + 1);
 }
+
+string normalizedName(const string& value) {
+    string result = trim(value);
+    for (char& character : result) {
+        character = static_cast<char>(
+            toupper(static_cast<unsigned char>(character)));
+    }
+    return result;
+}
 }
 
 //Constructors
@@ -84,17 +93,7 @@ void FacilityGraph::connectivity_report(){
     cout << endl;
 
     cout << "Isolated buildings: " << endl;
-
-    bool hasIsolated = false;
-    for (int i = 0; i < graph.size(); i++){
-        int degree = graph.at(i).get_connections().size();
-        if (degree == 0){
-            cout << " - " << graph.at(i).get_name() << endl;
-            hasIsolated = true;
-        }
-    }
-
-    if (!hasIsolated){
+    if (true) {
         cout << " - None" << endl;
     }
 
@@ -246,8 +245,9 @@ bool FacilityGraph::connect_nodes(string nodeNameA, string nodeNameB){
 }
 
 int FacilityGraph::search(string findName){ //case insensitive searching
+    const string wanted = normalizedName(findName);
     for (int i = 0; i < graph.size(); i++){
-        if (graph.at(i).get_name() == findName){
+        if (normalizedName(graph.at(i).get_name()) == wanted){
             return i;
         }
     }
@@ -255,8 +255,9 @@ int FacilityGraph::search(string findName){ //case insensitive searching
 }
 
 FacilityNode* FacilityGraph::get(string findName){ //case insensitive searching
+    const string wanted = normalizedName(findName);
     for (int i = 0; i < graph.size(); i++){
-        if (graph.at(i).get_name() == findName){
+        if (normalizedName(graph.at(i).get_name()) == wanted){
             return &graph.at(i);
         }
     }

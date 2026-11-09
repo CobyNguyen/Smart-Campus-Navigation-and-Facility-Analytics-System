@@ -1,5 +1,6 @@
 #include "../include/facilityGraph.h"
 #include "../include/facilityDatabase.h"
+#include "../include/DepartmentMenu.h"
 #include "../include/departmentTree.h"
 #include <iostream>  
 #include <string>
@@ -15,15 +16,15 @@ DepartmentTree departmentTree;
 void PrintMenu() { //Menu
     cout << "====================\n";
     cout << "Menu Options:\n";
-    cout << "1. Display all facilities\n";
-    cout << "2. Find facility by ID\n";
-    cout << "3. Find facilities by name\n";
-    cout << "4. Find facilities by category\n";
-    cout << "5. Print category report\n";
-    cout << "6. Display graph connections\n";
-    cout << "7. Check if a building is reachable\n";
-    cout << "8. Find shortest path between two buildings\n";
-    cout << "9. Print connectivity report\n";
+    cout << "1. View all facilities\n";
+    cout << "2. Search facility by ID\n";
+    cout << "3. View campus graph\n";
+    cout << "4. Display graph counts and degrees\n";
+    cout << "5. Find reachable buildings (BFS)\n";
+    cout << "6. Add department\n";
+    cout << "7. Search department\n";
+    cout << "8. Display department hierarchy\n";
+    cout << "9. Run preorder traversal\n";
     cout << "0. Exit\n";
     cout << "====================\n";
 }
@@ -35,31 +36,18 @@ void PrintFacility(const Facility& facility) {
          << facility.getCategory() << "\n";
 }
 
-void PrintMatches(const vector<Facility>& matches) {
-    for (const Facility& facility : matches) {
-        PrintFacility(facility);
-    }
-    cout << "Matches: " << matches.size() << "\n";
-}
-
 void runCommand(int choice) { //Function to run commands based on user input
     switch (choice) {
-        case 1:
+        case 1: {
             database.displayAll();
             break;
+        }
         case 2: {
             string id;
             cout << "Enter facility ID: ";
-            getline(cin, id);
-
-            if (!FacilityDatabase::isValidId(id)) {
-                cout << "Invalid facility ID.\n";
-                break;
-            }
-
+            cin >> id;
             const Facility* facility = database.findById(id);
             if (facility) {
-                cout << "Facility found:\n";
                 PrintFacility(*facility);
             } else {
                 cout << "Facility not found.\n";
@@ -67,61 +55,65 @@ void runCommand(int choice) { //Function to run commands based on user input
             break;
         }
         case 3: {
-            string name;
-            cout << "Enter facility name: ";
-            getline(cin, name);
-            PrintMatches(database.findByName(name));
+            graph.display_connections();
             break;
         }
         case 4: {
-            string category;
-            cout << "Enter category: ";
-            getline(cin, category);
-            PrintMatches(database.findByCategory(category));
+            graph.connectivity_report();
             break;
         }
-        case 5:
-            database.printCategoryReport();
-            break;
-        case 6:
-            graph.display_connections();
-            break;
-        case 7: {
-            string start;
-            cout << "Enter starting building: ";
-            getline(cin, start);
-            const int startIndex = graph.search(start);
-            if (startIndex >= 0) {
-                graph.reachability(*graph.get(start));
+        case 5: {
+            string buildingName;
+            cout << "Enter starting building name: ";
+            cin >> buildingName;
+            cin.ignore(); // Clear the newline character from the input buffer
+            FacilityNode* startNode = graph.get(buildingName);
+            if (startNode) {
+                graph.reachability(*startNode);
             } else {
-                cout << "Building not found.\n";
+                cout << "Building not found in the graph.\n";
             }
+            break;
+        }
+        case 6: {
+            string name, parentName;
+            cout << "Enter department name: ";
+            cin.ignore(); // Clear the newline character from the input buffer
+            getline(cin, name);
+            cout << "Enter parent department name (or leave blank for root): ";
+            getline(cin, parentName);
+            string result = departmentTree.addDepartment(name, parentName);
+            if (!result.empty()) {
+                cout << "Error: " << result << "\n";
+            } else {
+                cout << "Department added successfully.\n";
+            }
+            break;
+        }
+        case 7: {
+            string name;
+            cout << "Enter department name to search: ";
+            cin.ignore(); // Clear the newline character from the input buffer
+            getline(cin, name);
+            departmentTree.printDepartment(name, cout);
             break;
         }
         case 8: {
-            string start, destination;
-            cout << "Enter starting building: ";
-            getline(cin, start);
-            cout << "Enter destination building: ";
-            getline(cin, destination);
-
-            const int startIndex = graph.search(start);
-            const int destinationIndex = graph.search(destination);
-            if (startIndex < 0 || destinationIndex < 0) {
-                cout << "One or both buildings were not found.\n";
-                break;
-            }
-            graph.shortest_path(*graph.get(start), *graph.get(destination));
+            departmentTree.printHierarchy(cout);
             break;
         }
-        case 9:
-            graph.connectivity_report();
+        case 9: {
+            departmentTree.printTraversal(DepartmentTree::Traversal::Preorder, cout);
             break;
-        case 0:
-            cout << "Exiting program.\n";   
+        }
+        case 0: {
+            cout << "Exiting program.\n";
             break;
-        default:
+        }
+        default: {
             cout << "Invalid choice. Please try again.\n";
+            break;
+        }
     }
 }
 
@@ -158,13 +150,10 @@ int main(){
     while (choice != 0) {
         PrintMenu();
         cout << "Enter your choice: ";
-        if (!(cin >> choice)) {
-            cin.clear();
-            cin.ignore(10000, '\n');
+        if (!readMenuChoice(cin, choice)) {
             cout << "Invalid choice. Please enter a number.\n";
             continue;
         }
-        cin.ignore(10000, '\n');
         runCommand(choice);
     }
 
