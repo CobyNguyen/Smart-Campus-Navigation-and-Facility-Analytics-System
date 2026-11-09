@@ -26,6 +26,20 @@ void PrintMenu() { //Menu
     cout << "====================\n";
 }
 
+void PrintFacility(const Facility& facility) {
+    cout << facility.getId() << " | "
+         << facility.getName() << " | "
+         << facility.getBuilding() << " | "
+         << facility.getCategory() << "\n";
+}
+
+void PrintMatches(const vector<Facility>& matches) {
+    for (const Facility& facility : matches) {
+        PrintFacility(facility);
+    }
+    cout << "Matches: " << matches.size() << "\n";
+}
+
 void runCommand(int choice) { //Function to run commands based on user input
     switch (choice) {
         case 1:
@@ -34,54 +48,34 @@ void runCommand(int choice) { //Function to run commands based on user input
         case 2: {
             string id;
             cout << "Enter facility ID: ";
-            cin >> id;
+            getline(cin, id);
+
+            if (!FacilityDatabase::isValidId(id)) {
+                cout << "Invalid facility ID.\n";
+                break;
+            }
 
             const Facility* facility = database.findById(id);
             if (facility) {
                 cout << "Facility found:\n";
-                cout << "ID: " << facility->getId() << "\n";
-                cout << "Name: " << facility->getName() << "\n";
-                cout << "Building: " << facility->getBuilding() << "\n";
-                cout << "Category: " << facility->getCategory() << "\n";
+                PrintFacility(*facility);
             } else {
-                cout << "Facility with ID " << id << " not found.\n";
+                cout << "Facility not found.\n";
             }
-
             break;
         }
         case 3: {
             string name;
             cout << "Enter facility name: ";
-            cin >> name;
-
-            vector<Facility> facilities = database.findByName(name);
-            if (!facilities.empty()) {
-                cout << "Facilities found:\n";
-                for (const Facility& facility : facilities) {
-                    cout << "ID: " << facility.getId() << ", Name: " << facility.getName() << ", Building: " << facility.getBuilding() << ", Category: " << facility.getCategory() << "\n";
-                }
-            } else {
-                cout << "No facilities found with name " << name << ".\n";
-            }
-
+            getline(cin, name);
+            PrintMatches(database.findByName(name));
             break;
         }
         case 4: {
             string category;
             cout << "Enter category: ";
-            cin.ignore();
             getline(cin, category);
-
-            vector<Facility> matches = database.findByCategory(category);
-
-            for (const Facility& facility : matches) {
-                cout << facility.getId() << " | "
-                    << facility.getName() << " | "
-                    << facility.getBuilding() << " | "
-                    << facility.getCategory() << "\n";
-            }
-
-            cout << "Matches: " << matches.size() << "\n";
+            PrintMatches(database.findByCategory(category));
             break;
         }
         case 5:
@@ -136,12 +130,15 @@ int main(){
     while (choice != 0) {
         PrintMenu();
         cout << "Enter your choice: ";
-        cin >> choice;
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Invalid choice. Please enter a number.\n";
+            continue;
+        }
+        cin.ignore(10000, '\n');
         runCommand(choice);
     }
-
-
-    graph.display_connections();
 
     return 0;
 }
