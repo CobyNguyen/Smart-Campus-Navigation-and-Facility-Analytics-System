@@ -1,5 +1,7 @@
 #include "../include/facilityNode.h"
 
+#include <queue>
+
 using namespace std;
 
 class FacilityGraph{
@@ -11,15 +13,15 @@ class FacilityGraph{
 
         void display_connections();
         bool has_node(const FacilityNode &in);
+        bool has_node(string in);
         bool add_node(const FacilityNode &in);
         bool add_node(string in);
         bool connect_nodes(FacilityNode &a, FacilityNode &b);
         bool connect_nodes(string a, string b);
-        bool loadBuildings(const std::string& filename);
-        bool loadConnections(const std::string& filename);
-        bool isReachable(const std::string& start) const;
-        std::vector<std::string> shortestPath(
-            const std::string& start,
-            const std::string& destination) const;
-        void printConnectivityReport() const;
+        
+        int search(string findName);
+        void reachability(FacilityNode &in);
+        void shortest_path(FacilityNode &start, FacilityNode &target);
+        FacilityNode* get(string findName);
+        void unit_test();
 };
