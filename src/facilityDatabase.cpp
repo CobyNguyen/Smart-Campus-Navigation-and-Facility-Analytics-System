@@ -5,9 +5,11 @@
 #include <iostream>
 #include <sstream>
 
+using namespace std;
+
 namespace {
-std::string trim(const std::string& value) {
-    const std::string whitespace = " \t\r\n";
+string trim(const string& value) {
+    const string whitespace = " \t\r\n";
     const int first = static_cast<int>(
         value.find_first_not_of(whitespace));
     if (first < 0) {
@@ -17,37 +19,37 @@ std::string trim(const std::string& value) {
     return value.substr(first, last - first + 1);
 }
 
-std::string lowerCase(const std::string& value) {
-    std::string result = value;
+string lowerCase(const string& value) {
+    string result = value;
     for (char& character : result) {
         character = static_cast<char>(
-            std::tolower(static_cast<unsigned char>(character)));
+            tolower(static_cast<unsigned char>(character)));
     }
     return result;
 }
 
-std::string upperCase(std::string value) {
+string upperCase(string value) {
     for (char& character : value) {
         character = static_cast<char>(
-            std::toupper(static_cast<unsigned char>(character)));
+            toupper(static_cast<unsigned char>(character)));
     }
     return value;
 }
 
-bool validNormalizedId(const std::string& id) {
+bool validNormalizedId(const string& id) {
     if (id.size() != 4 || id.front() != 'F') {
         return false;
     }
-    return std::isdigit(static_cast<unsigned char>(id[1])) &&
-           std::isdigit(static_cast<unsigned char>(id[2])) &&
-           std::isdigit(static_cast<unsigned char>(id[3]));
+    return isdigit(static_cast<unsigned char>(id[1])) &&
+           isdigit(static_cast<unsigned char>(id[2])) &&
+           isdigit(static_cast<unsigned char>(id[3]));
 }
 
-std::vector<std::string> splitFields(const std::string& line) {
-    std::vector<std::string> fields;
-    std::stringstream stream(line);
-    std::string field;
-    while (std::getline(stream, field, '|')) {
+vector<string> splitFields(const string& line) {
+    vector<string> fields;
+    stringstream stream(line);
+    string field;
+    while (getline(stream, field, '|')) {
         fields.push_back(trim(field));
     }
     if (!line.empty() && line.back() == '|') {
@@ -56,10 +58,10 @@ std::vector<std::string> splitFields(const std::string& line) {
     return fields;
 }
 
-bool isAcceptedBuilding(const std::string& building,
-                        const std::vector<std::string>& acceptedBuildings) {
-    const std::string normalized = lowerCase(building);
-    for (const std::string& accepted : acceptedBuildings) {
+bool isAcceptedBuilding(const string& building,
+                        const vector<string>& acceptedBuildings) {
+    const string normalized = lowerCase(building);
+    for (const string& accepted : acceptedBuildings) {
         if (lowerCase(accepted) == normalized) {
             return true;
         }
@@ -67,10 +69,10 @@ bool isAcceptedBuilding(const std::string& building,
     return false;
 }
 
-std::string canonicalBuilding(const std::string& building,
-                              const std::vector<std::string>& acceptedBuildings) {
-    const std::string normalized = lowerCase(building);
-    for (const std::string& accepted : acceptedBuildings) {
+string canonicalBuilding(const string& building,
+                              const vector<string>& acceptedBuildings) {
+    const string normalized = lowerCase(building);
+    for (const string& accepted : acceptedBuildings) {
         if (lowerCase(accepted) == normalized) {
             return accepted;
         }
@@ -79,7 +81,7 @@ std::string canonicalBuilding(const std::string& building,
 }
 
 void printFacility(const Facility& facility) {
-    std::cout << facility.getId() << " | " << facility.getName() << " | "
+    cout << facility.getId() << " | " << facility.getName() << " | "
               << facility.getBuilding() << " | " << facility.getCategory()
               << '\n';
 }
@@ -89,37 +91,37 @@ FacilityDatabase::FacilityDatabase(int tableCapacity)
     : idTable(tableCapacity), rejectedRecords(0) {}
 
 bool FacilityDatabase::load(
-    const std::string& filename,
-    const std::vector<std::string>& acceptedBuildings) {
+    const string& filename,
+    const vector<string>& acceptedBuildings) {
     facilities.clear();
     idTable = FacilityTable(idTable.capacity());
     rejectedRecords = 0;
 
-    std::ifstream input(filename);
+    ifstream input(filename);
     if (!input) {
-        std::cerr << "Error: could not open " << filename << '\n';
+        cerr << "Error: could not open " << filename << '\n';
         return false;
     }
 
     int acceptedRecords = 0;
-    std::string line;
+    string line;
     int lineNumber = 0;
-    while (std::getline(input, line)) {
+    while (getline(input, line)) {
         ++lineNumber;
-        const std::string trimmedLine = trim(line);
+        const string trimmedLine = trim(line);
         if (trimmedLine.empty() || trimmedLine.front() == '#') {
             continue;
         }
 
-        const std::vector<std::string> fields = splitFields(line);
-        std::string reason;
+        const vector<string> fields = splitFields(line);
+        string reason;
         if (fields.size() != 4) {
             reason = "expected four fields";
         } else if (fields[0].empty() || fields[1].empty() ||
                    fields[2].empty() || fields[3].empty()) {
             reason = "a required field is empty";
         } else {
-            const std::string normalizedId = upperCase(fields[0]);
+            const string normalizedId = upperCase(fields[0]);
             if (!validNormalizedId(normalizedId)) {
                 reason = "invalid facility ID";
             } else if (!isAcceptedBuilding(fields[2], acceptedBuildings)) {
@@ -138,12 +140,12 @@ bool FacilityDatabase::load(
 
         if (!reason.empty()) {
             ++rejectedRecords;
-            std::cerr << "Warning: " << filename << ':' << lineNumber
+            cerr << "Warning: " << filename << ':' << lineNumber
                       << ": " << reason << '\n';
         }
     }
 
-    std::cout << "Loaded " << filename << ": " << acceptedRecords
+    cout << "Loaded " << filename << ": " << acceptedRecords
               << " accepted, " << rejectedRecords << " rejected"
               << " (capacity " << idTable.capacity() << ", entries "
               << idTable.size() << ", collisions " << idTable.collisions()
@@ -151,29 +153,29 @@ bool FacilityDatabase::load(
     return true;
 }
 
-bool FacilityDatabase::isValidId(const std::string& id) {
+bool FacilityDatabase::isValidId(const string& id) {
     return validNormalizedId(upperCase(trim(id)));
 }
 
 void FacilityDatabase::displayAll() const {
     if (facilities.empty()) {
-        std::cout << "No facilities loaded.\n";
+        cout << "No facilities loaded.\n";
         return;
     }
     for (const Facility& facility : facilities) {
         printFacility(facility);
     }
-    std::cout << "Total facilities: " << facilities.size() << '\n';
+    cout << "Total facilities: " << facilities.size() << '\n';
 }
 
-const Facility* FacilityDatabase::findById(const std::string& id) const {
+const Facility* FacilityDatabase::findById(const string& id) const {
     return idTable.find(upperCase(trim(id)));
 }
 
-std::vector<Facility> FacilityDatabase::findByName(
-    const std::string& name) const {
-    const std::string normalized = lowerCase(trim(name));
-    std::vector<Facility> matches;
+vector<Facility> FacilityDatabase::findByName(
+    const string& name) const {
+    const string normalized = lowerCase(trim(name));
+    vector<Facility> matches;
     for (const Facility& facility : facilities) {
         if (lowerCase(facility.getName()) == normalized) {
             matches.push_back(facility);
@@ -182,10 +184,10 @@ std::vector<Facility> FacilityDatabase::findByName(
     return matches;
 }
 
-std::vector<Facility> FacilityDatabase::findByCategory(
-    const std::string& category) const {
-    const std::string normalized = lowerCase(trim(category));
-    std::vector<Facility> matches;
+vector<Facility> FacilityDatabase::findByCategory(
+    const string& category) const {
+    const string normalized = lowerCase(trim(category));
+    vector<Facility> matches;
     for (const Facility& facility : facilities) {
         if (lowerCase(facility.getCategory()) == normalized) {
             matches.push_back(facility);
@@ -195,8 +197,8 @@ std::vector<Facility> FacilityDatabase::findByCategory(
 }
 
 void FacilityDatabase::printCategoryReport() const {
-    std::vector<std::string> categories;
-    std::vector<int> counts;
+    vector<string> categories;
+    vector<int> counts;
     for (const Facility& facility : facilities) {
         int index = 0;
         while (index < static_cast<int>(categories.size()) &&
@@ -213,11 +215,11 @@ void FacilityDatabase::printCategoryReport() const {
     }
 
     if (categories.empty()) {
-        std::cout << "No facility categories to report.\n";
+        cout << "No facility categories to report.\n";
         return;
     }
     for (int index = 0; index < static_cast<int>(categories.size()); ++index) {
-        std::cout << categories[index] << ": " << counts[index] << '\n';
+        cout << categories[index] << ": " << counts[index] << '\n';
     }
 }
 

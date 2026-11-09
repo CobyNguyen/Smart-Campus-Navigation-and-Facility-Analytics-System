@@ -12,16 +12,16 @@ public:
     FacilityTable(int capacity = 11);
 
     bool insert(const Facility& facility);
-    const Facility* find(const std::string& id) const;
-    bool contains(const std::string& id) const;
+    const Facility* find(const string& id) const;
+    bool contains(const string& id) const;
 
     int capacity() const;
     int size() const;
     int collisions() const;
 
 private:
-    int hash(const std::string& id) const;
-    std::vector<std::vector<Facility>> buckets;
+    int hash(const string& id) const;
+    vector<vector<Facility>> buckets;
     int entryCount;
     int collisionCount;
 };

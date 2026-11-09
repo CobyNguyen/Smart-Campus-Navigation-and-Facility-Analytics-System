@@ -6,17 +6,18 @@ using namespace std;
 
 class Facility {
 public:
-    Facility() = default;
+    Facility() = default; // Default constructors
     Facility(const string& facilityId,
              const string& facilityName,
              const string& facilityBuilding,
              const string& facilityCategory);
 
+                //Getters
     const string& getId() const;
     const string& getName() const;
     const string& getBuilding() const;
     const string& getCategory() const;
-
+        //setters
     void setId(const string& facilityId);
     void setName(const string& facilityName);
     void setBuilding(const string& facilityBuilding);

@@ -82,7 +82,7 @@ void runCommand(int choice) { //Function to run commands based on user input
             database.printCategoryReport();
             break;
         case 6:
-            // graph.display_connections();
+            // graph.display_connections(); //
             break;
         case 7: {
             break;

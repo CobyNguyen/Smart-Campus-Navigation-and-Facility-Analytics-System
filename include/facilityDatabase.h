@@ -12,14 +12,14 @@ class FacilityDatabase {
 public:
     explicit FacilityDatabase(int tableCapacity = 11);
 
-    bool load(const std::string& filename,
-              const std::vector<std::string>& acceptedBuildings);
+    bool load(const string& filename,
+              const vector<string>& acceptedBuildings);
 
-    static bool isValidId(const std::string& id);
+    static bool isValidId(const string& id);
     void displayAll() const;
-    const Facility* findById(const std::string& id) const;
-    vector<Facility> findByName(const std::string& name) const;
-    vector<Facility> findByCategory(const std::string& category) const;
+    const Facility* findById(const string& id) const;
+    vector<Facility> findByName(const string& name) const;
+    vector<Facility> findByCategory(const string& category) const;
     void printCategoryReport() const;
 
     int acceptedCount() const;
