@@ -2,6 +2,11 @@
 #include <cstddef>
 #include <queue>
 
+#include <cctype>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
 using namespace std;
 
 //Constructors

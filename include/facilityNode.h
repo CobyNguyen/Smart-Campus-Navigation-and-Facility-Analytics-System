@@ -19,6 +19,8 @@ class FacilityNode{
         string get_name() const;
         
         vector<FacilityNode*> get_connections();
+
+        const vector<FacilityNode*>& get_connections() const;
         bool has_connection(FacilityNode* in);
         bool add_connection(FacilityNode* in);
 

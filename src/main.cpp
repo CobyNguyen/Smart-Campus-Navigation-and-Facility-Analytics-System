@@ -1,5 +1,6 @@
 #include "../include/facilityGraph.h"
 #include "../include/facilityDatabase.h"
+#include "../include/departmentTree.h"
 #include <iostream>  
 #include <string>
 #include <vector>
@@ -9,6 +10,7 @@ using namespace std;
 
 FacilityDatabase database; //Creates global instance of both facility database and class
 FacilityGraph graph;
+DepartmentTree departmentTree;
 
 void PrintMenu() { //Menu
     cout << "====================\n";
@@ -19,8 +21,8 @@ void PrintMenu() { //Menu
     cout << "4. Find facilities by category\n";
     cout << "5. Print category report\n";
     cout << "6. Display graph connections\n";
-    cout << "7. Check if a facility is reachable\n";
-    cout << "8. Find shortest path between two facilities\n";
+    cout << "7. Check if a building is reachable\n";
+    cout << "8. Find shortest path between two buildings\n";
     cout << "9. Print connectivity report\n";
     cout << "0. Exit\n";
     cout << "====================\n";
@@ -82,7 +84,7 @@ void runCommand(int choice) { //Function to run commands based on user input
             database.printCategoryReport();
             break;
         case 6:
-            // graph.display_connections(); //
+            graph.display_connections();
             break;
         case 7: {
             break;
@@ -91,7 +93,7 @@ void runCommand(int choice) { //Function to run commands based on user input
             break;
         }
         case 9:
-            // graph.printConnectivityReport();
+            graph.printConnectivityReport();
             break;
         case 0:
             cout << "Exiting program.\n";
@@ -124,6 +126,25 @@ vector<string> LoadBuildings(const string& filename) { // Function to load build
 int main(){
 
     graph.unit_test();
+    vector<string> buildings = LoadBuildings("data/buildings.txt");
+    graph.loadBuildings("data/buildings.txt");
+    graph.loadConnections("data/connections.txt");
+    database.load("data/facilities.txt", buildings);
+
+    int choice = -1;
+
+    while (choice != 0) {
+        PrintMenu();
+        cout << "Enter your choice: ";
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Invalid choice. Please enter a number.\n";
+            continue;
+        }
+        cin.ignore(10000, '\n');
+        runCommand(choice);
+    }
 
     return 0;
 }
