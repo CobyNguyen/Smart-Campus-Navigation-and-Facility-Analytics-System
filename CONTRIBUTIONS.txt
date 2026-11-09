@@ -1,21 +1,21 @@
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 Coby Nguyen - Member A:
-facility records - 
+facility records
 custom hash table
 ID search, name, and category search
 category report
 files:
-    facilityDatabase - implemented through 
-    facilityTable
-    facility
+    facilityDatabase.cpp/.h
+    facilityTable.cpp/.h
+    facility.cpp/.h
 
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 Noah Clifford - Member B:
 
 campus graph - implemented through facilityGraph class
-BFS reachability - N/A
-shortest path - N/A
-connectivity report WIP - implemented through facilityGraph class using an adjacency list (chosen for simplicity and text output amount)
+BFS reachability 
+shortest path
+connectivity report - implemented through facilityGraph class using an adjacency list (chosen for simplicity and text output amount)
 
 files:
     facilityGraph.cpp/h
@@ -27,10 +27,25 @@ added safegaurds to the graph and nodes:
     aborts when trying to connect nodes that are already connected
 
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-Member C:
+AayusTamang - Member C:
+
+department general tree
+department file loading and validation
+department search and hierarchy display
+preorder, postorder, and level-order traversal support
+department statistics
+
+files:
+    src/DepartmentTree.cpp
+    include/DepartmentTree.h
+    src/DepartmentMenu.cpp
+    include/DepartmentMenu.h
 
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 Shared work:
 
-    main.cpp
+    src/main.cpp integration and Milestone 1 menu
+    file loading validation and error handling
+    README.txt, design_document.txt, and test_results.txt
+    build and integration testing
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
