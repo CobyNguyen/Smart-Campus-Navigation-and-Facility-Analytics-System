@@ -32,16 +32,60 @@ void runCommand(int choice) { //Function to run commands based on user input
             database.displayAll();
             break;
         case 2: {
+            string id;
+            cout << "Enter facility ID: ";
+            cin >> id;
+
+            const Facility* facility = database.findById(id);
+            if (facility) {
+                cout << "Facility found:\n";
+                cout << "ID: " << facility->getId() << "\n";
+                cout << "Name: " << facility->getName() << "\n";
+                cout << "Building: " << facility->getBuilding() << "\n";
+                cout << "Category: " << facility->getCategory() << "\n";
+            } else {
+                cout << "Facility with ID " << id << " not found.\n";
+            }
+
             break;
         }
         case 3: {
+            string name;
+            cout << "Enter facility name: ";
+            cin >> name;
+
+            vector<Facility> facilities = database.findByName(name);
+            if (!facilities.empty()) {
+                cout << "Facilities found:\n";
+                for (const Facility& facility : facilities) {
+                    cout << "ID: " << facility.getId() << ", Name: " << facility.getName() << ", Building: " << facility.getBuilding() << ", Category: " << facility.getCategory() << "\n";
+                }
+            } else {
+                cout << "No facilities found with name " << name << ".\n";
+            }
+
             break;
         }
         case 4: {
+            string category;
+            cout << "Enter category: ";
+            cin.ignore();
+            getline(cin, category);
+
+            vector<Facility> matches = database.findByCategory(category);
+
+            for (const Facility& facility : matches) {
+                cout << facility.getId() << " | "
+                    << facility.getName() << " | "
+                    << facility.getBuilding() << " | "
+                    << facility.getCategory() << "\n";
+            }
+
+            cout << "Matches: " << matches.size() << "\n";
             break;
         }
         case 5:
-            // database.printCategoryReport();
+            database.printCategoryReport();
             break;
         case 6:
             // graph.display_connections();
@@ -96,13 +140,6 @@ int main(){
         runCommand(choice);
     }
 
-
-    // graph.add_node("A");
-    // graph.add_node("B");
-    // graph.add_node("C");
-    // graph.add_node("D");
-
-    // graph.connect_nodes("A", "C");
 
     graph.display_connections();
 
