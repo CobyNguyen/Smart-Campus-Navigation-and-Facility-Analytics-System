@@ -22,15 +22,24 @@ The program requires the four input files in data\:
 
 Directory layout
 ----------------
-include\  Header files and class declarations.
-src\      C++ implementations and main.cpp.
-data\     The four input data files.
-README.txt            This document.
-CONTRIBUTIONS.txt     Team ownership and shared-work notes.
-design_document.txt   Data-structure and implementation design.
-test_results.txt      Milestone 1 test records.
-Makefile              Build commands.
-.gitignore             Ignored generated files.
+    include\  Header files and class declarations.
+
+    src\      C++ implementations and main.cpp.
+
+    data\     The four input data files.
+
+    README.txt            This document.
+
+    CONTRIBUTIONS.txt     Team ownership and shared-work notes.
+
+    design_document.txt   Data-structure and implementation design.
+
+    test_results.txt      Milestone 1 test records.
+
+    Makefile              Build commands.
+
+    .gitignore             Ignored generated files.
+
 
 Milestone 1 menu
 -----------------
