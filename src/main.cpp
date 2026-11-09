@@ -87,16 +87,38 @@ void runCommand(int choice) { //Function to run commands based on user input
             graph.display_connections();
             break;
         case 7: {
+            string start;
+            cout << "Enter starting building: ";
+            getline(cin, start);
+            const int startIndex = graph.search(start);
+            if (startIndex >= 0) {
+                graph.reachability(*graph.get(start));
+            } else {
+                cout << "Building not found.\n";
+            }
             break;
         }
         case 8: {
+            string start, destination;
+            cout << "Enter starting building: ";
+            getline(cin, start);
+            cout << "Enter destination building: ";
+            getline(cin, destination);
+
+            const int startIndex = graph.search(start);
+            const int destinationIndex = graph.search(destination);
+            if (startIndex < 0 || destinationIndex < 0) {
+                cout << "One or both buildings were not found.\n";
+                break;
+            }
+            graph.shortest_path(*graph.get(start), *graph.get(destination));
             break;
         }
         case 9:
-            graph.printConnectivityReport();
+            graph.display_connections();
             break;
         case 0:
-            cout << "Exiting program.\n";
+            cout << "Exiting program.\n";   
             break;
         default:
             cout << "Invalid choice. Please try again.\n";
@@ -128,6 +150,7 @@ int main(){
     graph.loadBuildings("data/buildings.txt");
     graph.loadConnections("data/connections.txt");
     database.load("data/facilities.txt", buildings);
+    departmentTree.loadFile("data/departments.txt", cout);
 
     int choice = -1;
 

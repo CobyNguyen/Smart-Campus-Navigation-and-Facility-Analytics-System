@@ -1,5 +1,13 @@
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-Member A:
+Coby Nguyen - Member A:
+facility records - 
+custom hash table
+ID search, name, and category search
+category report
+files:
+    facilityDatabase - implemented through 
+    facilityTable
+    facility
 
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 Noah Clifford - Member B:

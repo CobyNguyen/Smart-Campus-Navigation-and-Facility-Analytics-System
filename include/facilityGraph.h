@@ -15,11 +15,11 @@ class FacilityGraph{
         bool add_node(string in);
         bool connect_nodes(FacilityNode &a, FacilityNode &b);
         bool connect_nodes(string a, string b);
-        bool loadBuildings(const std::string& filename);
-        bool loadConnections(const std::string& filename);
-        bool isReachable(const std::string& start) const;
-        std::vector<std::string> shortestPath(
-            const std::string& start,
-            const std::string& destination) const;
-        void printConnectivityReport() const;
+        int search(string findName);
+        FacilityNode* get(string findName);
+        bool loadBuildings(const string& filename);
+        bool loadConnections(const string& filename);
+        void reachability(FacilityNode &in);
+        void shortest_path(FacilityNode &start, FacilityNode &target);
+        void unit_test();
 };
