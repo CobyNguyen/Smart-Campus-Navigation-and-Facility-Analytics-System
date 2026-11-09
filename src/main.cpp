@@ -146,6 +146,8 @@ vector<string> LoadBuildings(const string& filename) { // Function to load build
 
 
 int main(){
+
+    graph.unit_test();
     vector<string> buildings = LoadBuildings("data/buildings.txt");
     graph.loadBuildings("data/buildings.txt");
     graph.loadConnections("data/connections.txt");

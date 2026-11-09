@@ -1,5 +1,8 @@
 #include "../include/facilityGraph.h"
 #include <cstddef>
+#include <queue>
+
+#include <cctype>
 #include <fstream>
 #include <queue>
 #include <sstream>
@@ -188,69 +191,6 @@ bool FacilityGraph::connect_nodes(string nodeNameA, string nodeNameB){
         return false;
         }  
     }
-}
-
-bool FacilityGraph::loadBuildings(const string& filename) {
-    ifstream input(filename);
-    if (!input) {
-        cerr << "Error: could not open " << filename << endl;
-        return false;
-    }
-
-    graph.clear();
-    string line;
-    while (getline(input, line)) {
-        string building = trim(line);
-        if (building.empty() || building.front() == '#') {
-            continue;
-        }
-        add_node(building);
-    }
-
-    cout << "Loaded " << filename << ": "
-         << graph.size() << " buildings" << endl;
-    return true;
-}
-
-bool FacilityGraph::loadConnections(const string& filename) {
-    ifstream input(filename);
-    if (!input) {
-        cerr << "Error: could not open " << filename << endl;
-        return false;
-    }
-
-    int accepted = 0;
-    int rejected = 0;
-    int lineNumber = 0;
-    string line;
-    while (getline(input, line)) {
-        ++lineNumber;
-        string trimmedLine = trim(line);
-        if (trimmedLine.empty() || trimmedLine.front() == '#') {
-            continue;
-        }
-
-        string first;
-        string second;
-        stringstream fields(trimmedLine);
-        getline(fields, first, '|');
-        getline(fields, second, '|');
-        first = trim(first);
-        second = trim(second);
-
-        if (first.empty() || second.empty() || first == second ||
-            !connect_nodes(first, second)) {
-            ++rejected;
-            cerr << "Warning: " << filename << ':' << lineNumber
-                 << ": invalid, duplicate, or unknown connection" << endl;
-        } else {
-            ++accepted;
-        }
-    }
-
-    cout << "Loaded " << filename << ": "
-         << accepted << " accepted, " << rejected << " rejected" << endl;
-    return true;
 }
 
 int FacilityGraph::search(string findName){ //case insensitive searching
