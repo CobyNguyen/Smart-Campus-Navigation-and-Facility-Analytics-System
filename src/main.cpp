@@ -45,7 +45,7 @@ void runCommand(int choice) { //Function to run commands based on user input
         case 2: {
             string id;
             cout << "Enter facility ID: ";
-            cin >> id;
+            getline(cin, id);
             const Facility* facility = database.findById(id);
             if (facility) {
                 PrintFacility(*facility);
@@ -65,8 +65,7 @@ void runCommand(int choice) { //Function to run commands based on user input
         case 5: {
             string buildingName;
             cout << "Enter starting building name: ";
-            cin >> buildingName;
-            cin.ignore(); // Clear the newline character from the input buffer
+            getline(cin, buildingName);
             FacilityNode* startNode = graph.get(buildingName);
             if (startNode) {
                 graph.reachability(*startNode);

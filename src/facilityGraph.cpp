@@ -93,7 +93,14 @@ void FacilityGraph::connectivity_report(){
     cout << endl;
 
     cout << "Isolated buildings: " << endl;
-    if (true) {
+    bool hasIsolated = false;
+    for (int i = 0; i < static_cast<int>(graph.size()); i++){
+        if (graph.at(i).get_connections().empty()){
+            cout << " - " << graph.at(i).get_name() << endl;
+            hasIsolated = true;
+        }
+    }
+    if (!hasIsolated) {
         cout << " - None" << endl;
     }
 
