@@ -55,20 +55,19 @@ bool FacilityNode::add_connection(FacilityNode* in){
 void FacilityNode::print(){
     cout << name << " degree(" << connections.size() << ") - ";
     
-    if (connections.size() > 0){
-        for (int i = 0; i < connections.size() - 1; i++){
-    for (int i = 0; i < static_cast<int>(connections.size()); i++){
-        cout << connections.at(i) -> get_name() << " | ";
+    if (!connections.empty()){
+        for (int i = 0; i < static_cast<int>(connections.size()); i++){
+            if (i > 0){
+                cout << " | ";
+            }
+            cout << connections.at(i)->get_name();
         }
-
-        cout << connections.back() -> get_name();
     }
     else{
         cout << "N/A";
     }
 
     cout << endl;
-
 }
 
 bool FacilityNode::operator==(const FacilityNode& other) const {
