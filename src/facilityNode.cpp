@@ -20,24 +20,30 @@ string FacilityNode::get_name() const{
     return name;
 }
 
-vector<FacilityNode*> FacilityNode::get_connections(){
+const vector<FacilityNode*>& FacilityNode::get_connections() const{
     return connections;
 }
 
 //Other methods
 bool FacilityNode::has_connection(FacilityNode* in){
-    for (int i = 0; i < connections.size(); i++){
+    if (in == nullptr) {
+        return false;
+    }
+
+    for (int i = 0; i < static_cast<int>(connections.size()); i++){
         if (connections.at(i) == in){
             return true;
         }
     }
-
     return false;
 }
 
 bool FacilityNode::add_connection(FacilityNode* in){
+    if (in == nullptr || in == this) {
+        return false;
+    }
+
     if (!has_connection(in)) {
-        cout << "Connecting node: " << name << " to " << in -> get_name() << endl;
         connections.push_back(in); //Add the target node to our connections
         return true;
     } else {
@@ -49,13 +55,12 @@ bool FacilityNode::add_connection(FacilityNode* in){
 void FacilityNode::print(){
     cout << name << " | ";
     
-    for (int i = 0; i < connections.size(); i++){
+    for (int i = 0; i < static_cast<int>(connections.size()); i++){
         cout << connections.at(i) -> get_name() << " | ";
     }
 
     cout << endl;
 
-    //cout << name << endl;
 }
 
 bool FacilityNode::operator==(const FacilityNode& other) const {

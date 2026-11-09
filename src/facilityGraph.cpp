@@ -1,5 +1,10 @@
 #include "../include/facilityGraph.h"
 
+#include <cctype>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
 using namespace std;
 
 //Constructors
