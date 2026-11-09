@@ -115,7 +115,7 @@ void runCommand(int choice) { //Function to run commands based on user input
             break;
         }
         case 9:
-            graph.display_connections();
+            graph.connectivity_report();
             break;
         case 0:
             cout << "Exiting program.\n";   

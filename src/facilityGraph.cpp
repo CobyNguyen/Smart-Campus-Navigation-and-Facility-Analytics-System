@@ -28,10 +28,24 @@ FacilityGraph::FacilityGraph(){
 
 //Other methods
 void FacilityGraph::display_connections(){
+    cout << endl << "Campus Graph Connections:" << endl;
+    cout << endl;
+
+    if (graph.empty()){
+        cout << "No buildings!" << endl;
+        return;
+    }
+
+    for (int i = 0; i < static_cast<int>(graph.size()); i++){
+        graph.at(i).print();
+    }
+}
+
+void FacilityGraph::connectivity_report(){
     cout << endl << "Connectivity Report: " << endl;
     cout << endl;
 
-    if (graph.size() < 1){
+    if (graph.empty()){
         cout << "No buildings!" << endl;
         return;
     }
@@ -86,15 +100,53 @@ void FacilityGraph::display_connections(){
 
     cout << endl;
 
-    cout << "Connected components: " << "N/A" << endl;
+    vector<FacilityNode*> visited;
+    int components = 0;
+
+    for (int i = 0; i < static_cast<int>(graph.size()); i++){
+        bool alreadyVisited = false;
+        for (int j = 0; j < static_cast<int>(visited.size()); j++){
+            if (visited.at(j) == &graph.at(i)){
+                alreadyVisited = true;
+                break;
+            }
+        }
+
+        if (alreadyVisited){
+            continue;
+        }
+
+        components++;
+        queue<FacilityNode*> pending;
+        pending.push(&graph.at(i));
+        visited.push_back(&graph.at(i));
+
+        while (!pending.empty()){
+            FacilityNode* current = pending.front();
+            pending.pop();
+            const vector<FacilityNode*>& neighbors = current->get_connections();
+
+            for (int j = 0; j < static_cast<int>(neighbors.size()); j++){
+                FacilityNode* neighbor = neighbors.at(j);
+                bool neighborVisited = false;
+                for (int k = 0; k < static_cast<int>(visited.size()); k++){
+                    if (visited.at(k) == neighbor){
+                        neighborVisited = true;
+                        break;
+                    }
+                }
+
+                if (!neighborVisited){
+                    visited.push_back(neighbor);
+                    pending.push(neighbor);
+                }
+            }
+        }
+    }
+
+    cout << "Connected components: " << components << endl;
 
     cout << endl;
-
-    //for (int i = 0; i < graph.size(); i++){
-    //    graph.at(i).print();
-    //}
-
-    //cout << endl;
 
 }
 

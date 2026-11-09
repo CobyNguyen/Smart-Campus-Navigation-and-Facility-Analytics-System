@@ -12,6 +12,7 @@ class FacilityGraph{
         FacilityGraph();
 
         void display_connections();
+        void connectivity_report();
         bool has_node(const FacilityNode &in);
         bool has_node(string in);
         bool add_node(const FacilityNode &in);
