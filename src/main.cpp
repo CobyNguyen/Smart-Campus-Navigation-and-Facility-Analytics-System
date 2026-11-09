@@ -1,7 +1,7 @@
 #include "../include/facilityGraph.h"
 #include "../include/facilityDatabase.h"
 #include "../include/DepartmentMenu.h"
-#include "../include/departmentTree.h"
+#include "../include/DepartmentTree.h"
 #include <iostream>  
 #include <string>
 #include <vector>
