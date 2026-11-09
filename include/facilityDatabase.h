@@ -3,13 +3,14 @@
 
 #include "facility.h"
 #include "facilityTable.h"
-
 #include <string>
 #include <vector>
 
+using namespace std;
+
 class FacilityDatabase {
 public:
-    explicit FacilityDatabase(size_t tableCapacity = 11);
+    explicit FacilityDatabase(int tableCapacity = 11);
 
     bool load(const std::string& filename,
               const std::vector<std::string>& acceptedBuildings);
@@ -17,18 +18,18 @@ public:
     static bool isValidId(const std::string& id);
     void displayAll() const;
     const Facility* findById(const std::string& id) const;
-    std::vector<Facility> findByName(const std::string& name) const;
-    std::vector<Facility> findByCategory(const std::string& category) const;
+    vector<Facility> findByName(const std::string& name) const;
+    vector<Facility> findByCategory(const std::string& category) const;
     void printCategoryReport() const;
 
-    size_t acceptedCount() const;
-    size_t rejectedCount() const;
+    int acceptedCount() const;
+    int rejectedCount() const;
     const FacilityTable& table() const;
 
 private:
-    std::vector<Facility> facilities;
+    vector<Facility> facilities;
     FacilityTable idTable;
-    size_t rejectedRecords;
+    int rejectedRecords;
 };
 
 #endif

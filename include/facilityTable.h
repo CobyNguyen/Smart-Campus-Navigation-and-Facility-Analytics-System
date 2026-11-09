@@ -9,21 +9,21 @@ using namespace std;
 
 class FacilityTable {
 public:
-    FacilityTable(size_t capacity = 11);
+    FacilityTable(int capacity = 11);
 
     bool insert(const Facility& facility);
     const Facility* find(const std::string& id) const;
     bool contains(const std::string& id) const;
 
-    size_t capacity() const; 
-    size_t size() const;
-    size_t collisions() const;
+    int capacity() const;
+    int size() const;
+    int collisions() const;
 
 private:
-    size_t hash(const std::string& id) const;
+    int hash(const std::string& id) const;
     std::vector<std::vector<Facility>> buckets;
-    size_t entryCount;
-    size_t collisionCount;
+    int entryCount;
+    int collisionCount;
 };
 
 #endif

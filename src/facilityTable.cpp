@@ -14,31 +14,32 @@ std::string normalizeId(const std::string& value) {
 }
 }
 
-FacilityTable::FacilityTable(size_t capacity)
+FacilityTable::FacilityTable(int capacity)
     // A zero-capacity table cannot produce a valid hash index.
     : buckets(capacity == 0 ? 1 : capacity),
       entryCount(0),
       collisionCount(0) {}
 
-size_t FacilityTable::hash(const std::string& id) const {
-    size_t value = 0;
+int FacilityTable::hash(const std::string& id) const {
+    int value = 0;
     for (unsigned char character : id) {
         // Polynomial hashing combines character order and keeps the result
         // inside the table using the remainder operator.
-        value = (value * 31 + character) % buckets.size();
+        value = (value * 31 + character) %
+                static_cast<int>(buckets.size());
     }
     return value;
 }
 
 bool FacilityTable::insert(const Facility& facility) {
     Facility normalized = facility;
-    normalized.id = normalizeId(normalized.id);
-    std::vector<Facility>& bucket = buckets.at(hash(normalized.id));
+    normalized.setId(normalizeId(normalized.getId()));
+    std::vector<Facility>& bucket = buckets.at(hash(normalized.getId()));
 
     // Separate chaining stores multiple records in one bucket. A matching
     // key is rejected so the first accepted facility is never overwritten.
     for (const Facility& existing : bucket) {
-        if (existing.id == normalized.id) {
+        if (existing.getId() == normalized.getId()) {
             return false;
         }
     }
@@ -59,7 +60,7 @@ const Facility* FacilityTable::find(const std::string& id) const {
 
     // Lookup hashes the ID first, then scans only that bucket.
     for (const Facility& facility : bucket) {
-        if (facility.id == normalized) {
+        if (facility.getId() == normalized) {
             return &facility;
         }
     }
@@ -70,14 +71,14 @@ bool FacilityTable::contains(const std::string& id) const {
     return find(id) != nullptr;
 }
 
-size_t FacilityTable::capacity() const {
-    return buckets.size();
+int FacilityTable::capacity() const {
+    return static_cast<int>(buckets.size());
 }
 
-size_t FacilityTable::size() const {
+int FacilityTable::size() const {
     return entryCount;
 }
 
-size_t FacilityTable::collisions() const {
+int FacilityTable::collisions() const {
     return collisionCount;
 }

@@ -8,11 +8,12 @@
 namespace {
 std::string trim(const std::string& value) {
     const std::string whitespace = " \t\r\n";
-    const size_t first = value.find_first_not_of(whitespace);
-    if (first == std::string::npos) {
+    const int first = static_cast<int>(
+        value.find_first_not_of(whitespace));
+    if (first < 0) {
         return "";
     }
-    const size_t last = value.find_last_not_of(whitespace);
+    const int last = static_cast<int>(value.find_last_not_of(whitespace));
     return value.substr(first, last - first + 1);
 }
 
@@ -78,12 +79,13 @@ std::string canonicalBuilding(const std::string& building,
 }
 
 void printFacility(const Facility& facility) {
-    std::cout << facility.id << " | " << facility.name << " | "
-              << facility.building << " | " << facility.category << '\n';
+    std::cout << facility.getId() << " | " << facility.getName() << " | "
+              << facility.getBuilding() << " | " << facility.getCategory()
+              << '\n';
 }
 }
 
-FacilityDatabase::FacilityDatabase(size_t tableCapacity)
+FacilityDatabase::FacilityDatabase(int tableCapacity)
     : idTable(tableCapacity), rejectedRecords(0) {}
 
 bool FacilityDatabase::load(
@@ -99,9 +101,9 @@ bool FacilityDatabase::load(
         return false;
     }
 
-    size_t acceptedRecords = 0;
+    int acceptedRecords = 0;
     std::string line;
-    size_t lineNumber = 0;
+    int lineNumber = 0;
     while (std::getline(input, line)) {
         ++lineNumber;
         const std::string trimmedLine = trim(line);
@@ -125,9 +127,9 @@ bool FacilityDatabase::load(
             } else if (idTable.contains(normalizedId)) {
                 reason = "duplicate facility ID";
             } else {
-                Facility facility{normalizedId, fields[1],
+                Facility facility(normalizedId, fields[1],
                                   canonicalBuilding(fields[2], acceptedBuildings),
-                                  fields[3]};
+                                  fields[3]);
                 idTable.insert(facility);
                 facilities.push_back(facility);
                 ++acceptedRecords;
@@ -173,7 +175,7 @@ std::vector<Facility> FacilityDatabase::findByName(
     const std::string normalized = lowerCase(trim(name));
     std::vector<Facility> matches;
     for (const Facility& facility : facilities) {
-        if (lowerCase(facility.name) == normalized) {
+        if (lowerCase(facility.getName()) == normalized) {
             matches.push_back(facility);
         }
     }
@@ -185,7 +187,7 @@ std::vector<Facility> FacilityDatabase::findByCategory(
     const std::string normalized = lowerCase(trim(category));
     std::vector<Facility> matches;
     for (const Facility& facility : facilities) {
-        if (lowerCase(facility.category) == normalized) {
+        if (lowerCase(facility.getCategory()) == normalized) {
             matches.push_back(facility);
         }
     }
@@ -194,15 +196,16 @@ std::vector<Facility> FacilityDatabase::findByCategory(
 
 void FacilityDatabase::printCategoryReport() const {
     std::vector<std::string> categories;
-    std::vector<size_t> counts;
+    std::vector<int> counts;
     for (const Facility& facility : facilities) {
-        size_t index = 0;
-        while (index < categories.size() &&
-               lowerCase(categories[index]) != lowerCase(facility.category)) {
+        int index = 0;
+        while (index < static_cast<int>(categories.size()) &&
+               lowerCase(categories[index]) !=
+                   lowerCase(facility.getCategory())) {
             ++index;
         }
-        if (index == categories.size()) {
-            categories.push_back(facility.category);
+        if (index == static_cast<int>(categories.size())) {
+            categories.push_back(facility.getCategory());
             counts.push_back(1);
         } else {
             ++counts[index];
@@ -213,16 +216,16 @@ void FacilityDatabase::printCategoryReport() const {
         std::cout << "No facility categories to report.\n";
         return;
     }
-    for (size_t index = 0; index < categories.size(); ++index) {
+    for (int index = 0; index < static_cast<int>(categories.size()); ++index) {
         std::cout << categories[index] << ": " << counts[index] << '\n';
     }
 }
 
-size_t FacilityDatabase::acceptedCount() const {
+int FacilityDatabase::acceptedCount() const {
     return facilities.size();
 }
 
-size_t FacilityDatabase::rejectedCount() const {
+int FacilityDatabase::rejectedCount() const {
     return rejectedRecords;
 }
 
