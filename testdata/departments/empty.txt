@@ -1,0 +1,1 @@
+# A fixture with no department records.
