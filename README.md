@@ -13,6 +13,9 @@ From the repository root:
     make.exe all
     .\smart_campus.exe
 
+Pass a data directory as the first argument to run with another set of inputs.
+On macOS or Linux, build with `make` and run `./smart_campus data`.
+
 The program requires the four input files in data\:
 
     buildings.txt
@@ -41,15 +44,16 @@ Directory layout
     .gitignore             Ignored generated files.
 
 
-Milestone 1 menu
------------------
-1. View all facilities
-2. Search facility by ID
-3. View campus graph
-4. Display graph counts and degrees
-5. Find reachable buildings (BFS)
-6. Add department
-7. Search department
-8. Display department hierarchy
-9. Run preorder traversal
-0. Exit
+Final menu
+----------
+| Options | Operations |
+| --- | --- |
+| 1–4 | List facilities and search by ID, name, or category |
+| 5–8 | Graph display, counts and degrees, BFS reachability, and shortest path |
+| 9–11 | Add a department, search by name, and show the hierarchy |
+| 12–15 | Preorder, postorder, level-order, and department statistics |
+| 16–17 | Facility category and graph connectivity reports |
+| 18 | Exit (`0` also exits) |
+
+Department additions last for the current run. The first addition to an empty
+tree creates the root without asking for a parent.

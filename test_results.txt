@@ -65,3 +65,84 @@ Input: A nonnumeric menu line, followed by 0.
 Expected: An error is shown and the program returns to the menu.
 Actual: The input was rejected and the program continued.
 Result: PASS
+
+Final menu and department checks
+--------------------------------
+Environment: macOS, Apple Clang in C++17 mode, make.
+Run the sample from the repository root with ./smart_campus. For a fixture,
+copy the sample files into a temporary directory, then copy the requested
+file from testdata/departments/ over departments.txt. Pass the temporary
+directory to ./smart_campus as its first argument.
+
+Test 11 - Instructor data
+Input: Compare the four tracked data files with the instructor ZIP.
+Expected: Every file matches byte for byte.
+Actual: All four matched.
+Result: PASS
+
+Test 12 - Searches
+Input: Option 10 with UNIVERSITY, padded mixed-case Computer Science, and
+Missing Unit.
+Expected: Root at depth 0 with 2 children, Computer Science at depth 2 with
+College of Engineering as its parent, and a not-found message for Missing Unit.
+Actual: All three searches returned the expected information.
+Result: PASS
+
+Test 13 - Sample traversals and statistics
+Input: Options 11, 12, 13, 14, and 15.
+Expected: Four-space hierarchy indentation per depth. Preorder visits the
+root first, postorder visits it last, and level-order visits both colleges
+before their departments. Report 7 departments, 4 leaves, and height 2.
+Actual: Exact output sequences, indentation, and statistics matched.
+Result: PASS
+
+Test 14 - Additions and validation
+Input: Add New Lab under an unknown parent, try a duplicate Computer Science,
+then add Research Lab under College of Science and search for it.
+Expected: Two rejections, followed by a searchable department at depth 2.
+The source file stays intact.
+Actual: Both invalid additions were rejected. Research Lab was found and
+the totals changed to 8 departments and 5 leaves. The source file matched.
+Result: PASS
+
+Test 15 - Empty tree and first addition
+Input: Use empty.txt. Run options 11 through 15, then add Research Office.
+Expected: Empty messages and statistics 0/0/N/A. Adding Research Office
+requires only its name and produces statistics 1/1/0.
+Actual: The empty messages and counts matched. No parent prompt appeared.
+Result: PASS
+
+Test 16 - Root-only tree
+Input: Use root-only.txt. Search for Research Campus and run options 11–15.
+Expected: The hierarchy and each traversal show one name. Parent is None,
+depth is 0, and statistics are 1 department, 1 leaf, and height 0.
+Actual: Each display and the statistics matched.
+Result: PASS
+
+Test 17 - File validation
+Input: Use invalid-records.txt converted to CRLF. Search for the two names
+with # and different internal spacing.
+Expected: 4 accepted, 8 rejected, with a warning for each rejected line.
+Both names remain distinct and use their original capitalization.
+Actual: The load summary, warning line numbers, searches, and statistics
+(4 departments, 2 leaves, height 2) matched.
+Result: PASS
+
+Test 18 - Missing department file
+Input: Omit departments.txt from the temporary directory and select 15.
+Expected: Error naming the file, zero accepted and rejected, and 0/0/N/A.
+Actual: The program reported the missing file, then showed empty statistics.
+Result: PASS
+
+Test 19 - Invalid input and exit
+Input: Blank option, abc, 0x, 99, blank names, then a valid search. Try 18,
+0, and EOF on fresh runs, including EOF during an add prompt.
+Expected: Errors for invalid entries, a working search, and clean exits.
+Actual: The menu recovered after each error and exited in all four cases.
+Result: PASS
+
+Test 20 - Shared menu smoke check
+Input: Run options 1–8, 16, and 17 with appropriate sample search values.
+Expected: Each option calls the existing facility or graph module.
+Actual: Listings, lookups, BFS, and both reports returned output.
+Result: PASS (dispatch only)
