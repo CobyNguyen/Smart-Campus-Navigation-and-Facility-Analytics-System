@@ -68,7 +68,7 @@ Result: PASS
 
 Final menu and department checks
 --------------------------------
-Environment: macOS, Apple Clang in C++17 mode, make.
+Build: make (C++17).
 Run the sample from the repository root with ./smart_campus. For a fixture,
 copy the sample files into a temporary directory, then copy the requested
 file from testdata/departments/ over departments.txt. Pass the temporary

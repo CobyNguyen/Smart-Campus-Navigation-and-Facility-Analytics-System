@@ -14,7 +14,7 @@ From the repository root:
     .\smart_campus.exe
 
 Pass a data directory as the first argument to run with another set of inputs.
-On macOS or Linux, build with `make` and run `./smart_campus data`.
+You can also build with `make` and run `./smart_campus data`.
 
 The program requires the four input files in data\:
 
