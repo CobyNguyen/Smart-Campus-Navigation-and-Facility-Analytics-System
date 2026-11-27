@@ -41,7 +41,7 @@ files:
     src/DepartmentMenu.cpp
     include/DepartmentMenu.h
 
-Final contribution reflection (AI-assisted):
+Final contribution reflection:
 I focused on connecting the department tree to options 9 through 15 of the Final menu.
 I reviewed how the existing menu handled an empty tree and how the tree reported depths and leaves.
 The menu used to ask for a parent even when adding the root, so I routed it through the existing department handler.
