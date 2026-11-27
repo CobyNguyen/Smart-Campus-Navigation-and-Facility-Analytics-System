@@ -34,5 +34,16 @@ DepartmentTree stores the department hierarchy as a general tree. Each node
 owns a vector of children through unique_ptr and stores a parent pointer for
 metadata lookup.
 DepartmentMenu handles department prompts and menu actions.
-main.cpp loads the files, prints the Milestone 1 menu, and coordinates calls
+main.cpp loads the files, prints the Final menu, and coordinates calls
 to the modules.
+
+Department traversals and statistics
+------------------------------------
+The child vector preserves sibling insertion order. Preorder visits a node
+before its children, while postorder visits the children first. The hierarchy
+uses preorder with four spaces of indentation per level. Level-order uses a
+FIFO queue to visit each level before moving to the next one.
+
+One depth-first pass counts departments and childless nodes and tracks the
+maximum depth in edges. A root-only tree has height zero. An empty tree has
+zero departments and leaves and displays its height as N/A.

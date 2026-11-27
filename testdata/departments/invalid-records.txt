@@ -1,0 +1,14 @@
+# Ignore lines whose first non-whitespace character is #.
+
+Early Child|Campus
+Campus|NONE
+  Student Services #2 | cAmPuS
+Help Desk|Student Services #2
+sTUDENT SERVICES #2|Campus
+Unknown Child|Missing Parent
+Other Root|NONE
+Broken line
+Extra|Campus|Field
+|Campus
+No Parent|
+Student  Services #2|Campus
