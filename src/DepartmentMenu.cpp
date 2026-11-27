@@ -49,11 +49,16 @@ bool readMenuChoice(std::istream& in, int& choice) {
         return false;
     }
     std::istringstream input(line);
-    if (!(input >> choice)) {
+    int parsedChoice;
+    if (!(input >> parsedChoice)) {
         return false;
     }
     input >> std::ws;
-    return input.eof();
+    if (!input.eof()) {
+        return false;
+    }
+    choice = parsedChoice;
+    return true;
 }
 
 bool handleDepartmentOption(int choice, DepartmentTree& tree, MenuPhase phase,
